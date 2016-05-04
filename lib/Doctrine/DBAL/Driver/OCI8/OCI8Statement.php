@@ -47,6 +47,11 @@ class OCI8Statement implements \IteratorAggregate, Statement
     protected $_conn;
 
     /**
+     * @var array
+     */
+    protected $_bindings = array();
+ 
+    /**
      * @var string
      */
     protected static $_PARAM = ':param';
@@ -134,7 +139,8 @@ class OCI8Statement implements \IteratorAggregate, Statement
      */
     public function bindValue($param, $value, $type = null)
     {
-        return $this->bindParam($param, $value, $type, null);
+        $this->_bindings[$param] = $value;
+        return $this->bindParam($param, $this->_bindings[$param], $type, null);
     }
 
     /**
